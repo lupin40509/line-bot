@@ -15,8 +15,6 @@ app = Flask(__name__)
 line_bot_api = LineBotApi('xCCQwGVRRmxjhszvdG02KkVFxC4jHA7U44ZZ4OCgzFJIpyL6g/HJ7wwuiKsLJxgigvl0Po7zwK3x1b2QCv2ozplOcEQUMNKrsDpL+BSSXmlJWkOPVFPAKyFkdXeAuYCFRfurgXPR6uAE78H//1CuLgdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('3ab8e92a15e1c060ac872d493fd79b5a')
 
-# 發送訊息到 www.line-bot.com/callback
-# 接收 "Line" 傳來的訊息
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -45,5 +43,5 @@ def handle_message(event):
         TextSendMessage(text=s))
 
 
-if __name__ == "__main__": #確保此檔案可直接執行的而不是載入
+if __name__ == "__main__": 
     app.run()
