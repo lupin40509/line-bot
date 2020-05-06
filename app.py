@@ -1,3 +1,8 @@
+import sys
+import datetime
+import gspread
+from  oauth2client.service_account import ServiceAccountCredentials as SAC
+
 from flask import Flask, request, abort
 
 from linebot import (
@@ -38,6 +43,8 @@ def callback():
 def handle_message(event):
     msg = event.message.text
     r = '很抱歉,你說什麼?'
+    GDriveJSON = 'linebot.json'
+    GSpreadSheet = 'Line Bot Order'
 
     if msg in ['hi','Hi']:
         r = '嗨'
@@ -49,11 +56,19 @@ def handle_message(event):
         r = '您想訂位,是嗎?'
     elif msg == '你好':
         r = '你好'
-    elif msg == '0':
-        sticker_message = StickerSendMessage(
-            package_id='1',
-            sticker_id='1'
-        )
+    elif '下訂' in msg:
+        line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text="你想訂什麼?"))
+        pass
+        
+
+        scope = ['https://docs.google.com/spreadsheets/d/18ehKGZg9RQSmAap0MyCdEL5acTa0r4fkOgLojNXsszc/edit?usp=sharing']
+        key = SAC.from_json_keyfile_name(GDriveJSON, scope)
+        gc = gspread.authorize(key)
+        worksheet = gc.open(GSpreadSheet).sheet1
+        if msg != "":
+            worksheet.append_row((datetime.datetime.now(), msg))
 
     line_bot_api.reply_message(
         event.reply_token,
